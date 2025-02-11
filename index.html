@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zoom Automation Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .logs {
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Admin Panel</h2>
+    <form id="meetingForm">
+      <input type="text" id="meetingId" placeholder="Meeting ID" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="number" id="numMembers" placeholder="Number of Members" min="1" required />
+      <input type="number" id="duration" placeholder="Duration (minutes)" min="1" required />
+      <button type="submit">Start Bots</button>
+    </form>
+    <div class="logs" id="logs"></div>
+  </div>
+
+  <script>
+    document.getElementById('meetingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const meetingId = document.getElementById('meetingId').value;
+      const password = document.getElementById('password').value;
+      const numMembers = parseInt(document.getElementById('numMembers').value);
+      const duration = parseInt(document.getElementById('duration').value);
+
+      const logsDiv = document.getElementById('logs');
+      logsDiv.innerHTML = ''; // Clear logs
+
+      for (let i = 0; i < numMembers; i++) {
+        const botName = generateRandomName();
+        logMessage(`Starting bot ${botName}...`);
+        await joinZoomMeeting(meetingId, password, botName, duration, logsDiv);
+      }
+    });
+
+    function generateRandomName() {
+      const names = ['John', 'Alice', 'Bob', 'Charlie', 'Rahul', 'Amit', 'Priya'];
+      return names[Math.floor(Math.random() * names.length)];
+    }
+
+    function logMessage(message) {
+      const logsDiv = document.getElementById('logs');
+      const logEntry = document.createElement('p');
+      logEntry.textContent = message;
+      logsDiv.appendChild(logEntry);
+    }
+
+    async function joinZoomMeeting(meetingId, password, botName, duration, logsDiv) {
+      try {
+        logMessage(`${botName} joining meeting...`);
+
+        // Simulate joining Zoom meeting (replace with Puppeteer or Selenium logic)
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
+        logMessage(`${botName} joined the meeting.`);
+
+        // Stay in the meeting for the specified duration
+        await new Promise(resolve => setTimeout(resolve, duration * 60 * 1000));
+        logMessage(`${botName} left the meeting.`);
+      } catch (error) {
+        logMessage(`Error: ${error.message}`);
+      }
+    }
+  </script>
+</body>
+</html>
